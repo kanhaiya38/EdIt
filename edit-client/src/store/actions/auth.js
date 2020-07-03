@@ -11,14 +11,20 @@ export const setCurrentUser = (user) => {
 
 export const authUser = (type, userData) => async (dispatch) => {
 	try {
-		await console.log("i am here");
-		const res = await API.post("/auth/signup", userData);
+		// console.log("i am here");
+		// console.log(userData);
+
+		const res = await API.post(`/auth/${type}`, userData);
+		// console.log(res);
+
 		const { token, ...user } = res.data;
+
 		localStorage.setItem("jwtToken", token);
 		setHeaderToken(token);
 		dispatch(setCurrentUser(user));
 		dispatch(removeError());
 	} catch (err) {
+		// console.log(err.message);
 		dispatch(addError(err.message));
 	}
 };

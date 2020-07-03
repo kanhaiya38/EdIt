@@ -12,3 +12,4 @@ mongoose.connect("mongodb://localhost/edit", {
 });
 
 module.exports.User = require("./user");
+module.exports.Document = require("./document");

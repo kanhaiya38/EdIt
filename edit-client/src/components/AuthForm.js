@@ -21,8 +21,6 @@ class AuthForm extends Component {
 		try {
 			event.preventDefault();
 			const authType = this.props.signUp ? "signup" : "signin";
-			console.log(this.state);
-
 			this.props.onAuth(authType, this.state);
 			this.props.history.push("/");
 		} catch (err) {
@@ -32,13 +30,20 @@ class AuthForm extends Component {
 
 	render() {
 		const { username, password } = this.state;
-		const { heading, buttonText } = this.props;
+		// console.log(this.props);
+
+		const { heading, buttonText, errors } = this.props;
 		return (
 			<div>
 				<div className="row justify-content-md-centrer text-center">
 					<div className="col-md-6">
 						<form onSubmit={this.handleSubmit}>
 							<h2>{heading}</h2>
+							{errors.message && (
+								<div className="alert alert-danger">
+									{errors.message}
+								</div>
+							)}
 							<label htmlFor="username">Username: </label>
 							<input
 								type="text"
@@ -58,9 +63,9 @@ class AuthForm extends Component {
 							/>
 							<button
 								type="submit"
-								className="btn btn-primary btn-large"
+								className="btn btn-primary btn-block btn-lg"
 							>
-								Submit
+								{buttonText}
 							</button>
 						</form>
 					</div>
