@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 // const User = require("./user");
+const updateVersioningPlugin = require("mongoose-update-versioning");
+const autopopulate = require("mongoose-autopopulate");
 
 const documentSchema = new mongoose.Schema(
 	{
@@ -11,15 +13,18 @@ const documentSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
 			required: true,
+			autopopulate: { select: "username", maxDepth: 2 },
 		},
 		collaborators: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
 				ref: "User",
+				autopopulate: { select: "username" },
 			},
 		],
 		content: {
 			type: String,
+			default: "",
 		},
 	},
 	{
@@ -38,6 +43,9 @@ const documentSchema = new mongoose.Schema(
 // 		next(err);
 // 	}
 // })
+
+documentSchema.plugin(autopopulate);
+documentSchema.plugin(updateVersioningPlugin);
 
 const Document = mongoose.model("Document", documentSchema);
 

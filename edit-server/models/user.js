@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const autopopulate = require("mongoose-autopopulate");
 
 const userSchema = new mongoose.Schema({
 	username: {
@@ -17,11 +18,16 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	documents: [{
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "Document"
-	}]
+	documents: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Document",
+			autopopulate: true,
+		},
+	],
 });
+
+userSchema.plugin(autopopulate);
 
 userSchema.pre("save", async function (next) {
 	try {

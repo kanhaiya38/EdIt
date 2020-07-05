@@ -9,6 +9,10 @@ export const setCurrentUser = (user) => {
 	};
 };
 
+export const setAuthorizationToken = (token) => {
+	setHeaderToken(token);
+};
+
 export const authUser = (type, userData) => async (dispatch) => {
 	try {
 		// console.log("i am here");
@@ -20,12 +24,14 @@ export const authUser = (type, userData) => async (dispatch) => {
 		const { token, ...user } = res.data;
 
 		localStorage.setItem("jwtToken", token);
-		setHeaderToken(token);
+		// setHeaderToken(token);
+		setAuthorizationToken(token);
 		dispatch(setCurrentUser(user));
 		dispatch(removeError());
 	} catch (err) {
 		// console.log(err.message);
 		dispatch(addError(err.message));
+		throw err;
 	}
 };
 
@@ -37,5 +43,6 @@ export const logout = () => async (dispatch) => {
 		dispatch(removeError());
 	} catch (err) {
 		dispatch(addError(err.message));
+		throw err;
 	}
 };

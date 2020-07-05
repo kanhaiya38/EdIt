@@ -1,44 +1,50 @@
 import React, { Component } from "react";
 
-class AuthForm extends Component {
+class LoginForm extends Component {
 	constructor() {
 		super();
 		this.state = {
 			username: "",
 			password: "",
 		};
-		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	handleInputChange(event) {
+	handleChange(event) {
 		this.setState({
 			[event.target.name]: event.target.value,
 		});
 	}
 
-	async handleSubmit(event) {
-		try {
-			event.preventDefault();
-			const authType = this.props.signUp ? "signup" : "signin";
-			this.props.onAuth(authType, this.state);
-			this.props.history.push("/");
-		} catch (err) {
-			return;
-		}
+	handleSubmit(event) {
+		event.preventDefault();
+		this.props
+			.authUser("signin", this.state)
+			.then(() => {
+				this.props.history.push("/documents");
+			})
+			.catch(() => {
+				return;
+			});
 	}
 
 	render() {
-		const { username, password } = this.state;
+		// const { username, password } = this.state;
 		// console.log(this.props);
 
-		const { heading, buttonText, errors } = this.props;
+		const { errors, removeError, history } = this.props;
+
+		history.listen(() => {
+			removeError();
+		});
+
 		return (
 			<div>
 				<div className="row justify-content-md-centrer text-center">
 					<div className="col-md-6">
 						<form onSubmit={this.handleSubmit}>
-							<h2>{heading}</h2>
+							<h2>Login</h2>
 							{errors.message && (
 								<div className="alert alert-danger">
 									{errors.message}
@@ -50,7 +56,7 @@ class AuthForm extends Component {
 								className="form-control"
 								id="username"
 								name="username"
-								onChange={this.handleInputChange}
+								onChange={this.handleChange}
 								value={this.state.email}
 							/>
 							<label htmlFor="password">Password: </label>
@@ -59,13 +65,13 @@ class AuthForm extends Component {
 								className="form-control"
 								id="password"
 								name="password"
-								onChange={this.handleInputChange}
+								onChange={this.handleChange}
 							/>
 							<button
 								type="submit"
 								className="btn btn-primary btn-block btn-lg"
 							>
-								{buttonText}
+								Log in
 							</button>
 						</form>
 					</div>
@@ -75,4 +81,4 @@ class AuthForm extends Component {
 	}
 }
 
-export default AuthForm;
+export default LoginForm;

@@ -11,18 +11,22 @@
 		"draft-js-buttons": "^2.0.2",
 		"draft-js-plugins-editor": "^3.0.0",
 		"draft-js-static-toolbar-plugin": "^3.0.1",
+		"jwt-decode": "^2.2.0",
+		"moment": "^2.27.0",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
+		"react-moment": "^0.9.7",
 		"react-quill": "^2.0.0-beta.2",
 		"react-redux": "^7.2.0",
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "3.4.1",
 		"redux": "^4.0.5",
-		"redux-thunk": "^2.3.0"
+		"redux-thunk": "^2.3.0",
+		"socket.io-client": "^2.3.0"
 	},
 	"proxy": "http://localhost:5000",
 	"scripts": {
-		"start": "react-scripts start",
+		"start": "BROWSER='chromium-browser' react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
