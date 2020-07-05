@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Document",
-			autopopulate: true,
+			// autopopulate: true,
 		},
 	],
 });

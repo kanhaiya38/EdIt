@@ -42,7 +42,6 @@ class Navbar extends Component {
 						<ul className="navbar-nav ml-auto">
 							<li className="nav-item">
 								<NavLink
-									// to={{ pathname: "/auth/signup" }}
 									to="/auth/signup"
 									className="nav-link"
 								>
@@ -51,7 +50,6 @@ class Navbar extends Component {
 							</li>
 							<li className="nav-item">
 								<NavLink
-									// to={{ pathname: "/auth/signin" }}
 									to="/auth/signin"
 									className="nav-link"
 								>

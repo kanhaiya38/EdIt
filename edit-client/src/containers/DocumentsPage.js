@@ -8,7 +8,6 @@ import {
 	deleteDocument,
 	createDocument,
 } from "../store/actions/documents";
-import { setCurrentEditor } from "../store/actions/editor";
 
 const DocumentsPage = (props) => {
 	let match = useRouteMatch();
@@ -29,7 +28,6 @@ const DocumentsPage = (props) => {
 					documents={documents}
 					fetchDocuments={fetchDocuments}
 					deleteDocument={deleteDocument}
-					setCurrentEditor={setCurrentEditor}
 				/>
 			</Route>
 			<Route exact path={`${match.path}/new`}>
@@ -57,6 +55,5 @@ export default withRouter(
 		fetchDocuments,
 		deleteDocument,
 		createDocument,
-		setCurrentEditor,
 	})(DocumentsPage)
 );

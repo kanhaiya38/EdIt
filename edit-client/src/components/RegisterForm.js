@@ -30,9 +30,6 @@ class RegisterForm extends Component {
 	}
 
 	render() {
-		// const { username, password } = this.state;
-		// console.log(this.props);
-
 		const { errors, removeError, history } = this.props;
 
 		history.listen(() => {

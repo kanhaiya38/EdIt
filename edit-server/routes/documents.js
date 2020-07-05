@@ -20,7 +20,7 @@ router.route("/documents").get(getAllDocuments).post(createDocument);
 router
 	.route("/documents/:document_id")
 	.get(getDocument)
-	.post(saveDocument)
+	.patch(saveDocument)
 	.delete(deleteDocument);
 
 module.exports = router;

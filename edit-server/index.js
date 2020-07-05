@@ -30,10 +30,13 @@ app.use(errorHandler);
 
 io.on("connection", (socket) => {
 	console.log("user is connected");
-	socket.on("doc", (data) => {
-		// console.log("==============================================");
-		// console.log(data);
-		// console.log("==============================================");
+	let count = 0;
+	socket.on("doc", (id, data) => {
+		console.log(count + "==============================================");
+		console.log(data);
+		console.log(count + "==============================================");
+		socket.broadcast.emit("doc", id, data);
+		count++;
 	});
 });
 

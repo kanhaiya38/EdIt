@@ -5,7 +5,7 @@ import EditorPage from "./EditorPage";
 import DocumentsPage from "./DocumentsPage";
 import AuthPage from "./AuthPage";
 
-const Main = (props) => {
+const Main = () => {
 	return (
 		<div className="container">
 			<Switch>
@@ -15,14 +15,11 @@ const Main = (props) => {
 				<Route path="/auth">
 					<AuthPage />
 				</Route>
-				<Route exact path="/documents">
+				<Route path="/documents">
 					<DocumentsPage />
 				</Route>
 				<Route
-					// exact
-					path="/documents/:documentId"
-					// render={(props) => <div>{props.match.documentId}</div>}
-					// component={EditorPage}
+					path="/document/:documentId"
 				>
 					<EditorPage />
 				</Route>

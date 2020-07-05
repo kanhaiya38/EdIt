@@ -1,21 +1,11 @@
-import {
-	MODIFY_DOCUMENT,
-	SAVE_DOCUMENT,
-	OPEN_EDITOR,
-	SET_CURRENT_EDITOR,
-} from "../actionTypes";
+import { SET_EDITOR_STATE, SAVE_EDITOR_STATE } from "../actionTypes";
 
 const editor = (state = {}, action) => {
-	console.log(action.type);
 	switch (action.type) {
-		case SET_CURRENT_EDITOR:
-			console.log("at least here");
+		case SET_EDITOR_STATE:
 			return action.editor;
-		// case SAVE_DOCUMENT:
-		// 	let newState = state.filter(
-		// 		(document) => document._id !== action.document.id
-		// 	);
-		// 	return [...newState, action.document];
+		case SAVE_EDITOR_STATE:
+			return { ...state, content: action.editor.content };
 		default:
 			return state;
 	}

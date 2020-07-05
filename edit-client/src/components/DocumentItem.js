@@ -9,13 +9,12 @@ const DocumentItem = ({
 	author,
 	deleteDocument,
 	isCorrectUser,
-	// setCurrentEditor,
 }) => {
 	console.log(id);
 	return (
 		<div>
 			<li className="list-group-item my-3">
-				<Link to={`documents/${id}/edit`} >
+				<Link to={`/document/${id}/edit`}>
 					<h5>{documentName}</h5>
 				</Link>
 				<div className="message-area">

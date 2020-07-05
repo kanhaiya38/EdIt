@@ -15,64 +15,74 @@ import {
 	BlockquoteButton,
 	CodeBlockButton,
 } from "draft-js-buttons";
-
-import { addCollaborator } from "../store/actions/documents";
-
 import "draft-js-static-toolbar-plugin/lib/plugin.css";
 import editorStyles from "./editorStyles.css";
-import { setCurrentEditor } from "../store/actions/editor";
-// import buttonStyles from "./buttonStyles.css";
-// import toolbarStyles from "./toolbarStyles.css";
+import { fetchEditorState } from "../store/actions/editor";
+import currentUser from "../store/reducers/currentUser";
 // =========================== SOCKET.IO =================================
 // import { API } from "../services/api";
 // import io from "socket.io-client";
-// import { openEditor } from "../store/actions/editor";
-// const socket = io("http://localhost:5000");
 // ======================================================================
 const staticToolbarPlugin = createToolbarPlugin();
 const { Toolbar } = staticToolbarPlugin;
 const plugins = [staticToolbarPlugin];
-const text = "Hey you start writing";
+const text = "Loading";
 
 class RichEditor extends Component {
 	constructor() {
 		super();
 		this.state = {
 			editorState: createEditorStateWithText(text),
-			collaborator: "",
 		};
-		// this.onChange = (editorState) => this.setState({ editorState });
 		this.onChange = this.onChange.bind(this);
 		this.handleKeyCommand = this.handleKeyCommand.bind(this);
 		this.focusEditor = this.focusEditor.bind(this);
 		this.saveContent = this.saveContent.bind(this);
+		// this.socket = io.connect("http://localhost:5000");
+		// this.socket.on("doc", (content) => {
+		// 	let newContentState = convertFromRaw(JSON.parse(content));
+		// 	// console.log(convertToRaw(newContentState));
+		// 	let newEditorState = EditorState.createWithContent(newContentState);
+		// 	if (newEditorState !== this.state.editorState) {
+		// 		this.setState({ editorState: newEditorState });
+		// 	}
+		// });
 	}
 
 	componentDidMount() {
-		// fetchEditorContent();
-		let { currentUser, documentId } = this.props;
-		// console.log(currentUser.user.id + " " + documentId);
-		this.props.fetchEditorState(currentUser.user.id, documentId);
-		// let content = convertFromRaw(rawContent);
-		// if (content) {
-		// } else {
-		// this.setState({ editorState: EditorState.createEmpty() });
-		// }
-		// if (rawContent) {
-		// 	this.setState({
-		// 		editorState: EditorState.createWithContent(
-		// 			convertFromRaw(rawContent)
-		// 		),
-		// 	});
-		// } else {
-		// 	this.setState({ editorState: EditorState.createEmpty() });
-		// }
+		let { editor, fetchEditorState, currentUser, documentId } = this.props;
+		fetchEditorState(currentUser.user.id, documentId)
+			.then((res) => res)
+			.then((res, err) => {
+				if (err) {
+					return;
+				}
+				console.log(res);
+				let rawContent = res.content;
+				if (rawContent !== "") {
+					let contentState = convertFromRaw(rawContent);
+					let newEditorState = EditorState.createWithContent(
+						contentState
+					);
+					this.setState({ editorState: newEditorState });
+				} else {
+					this.setState({ editorState: EditorState.createEmpty() });
+				}
+			});
 	}
-
 	onChange(editorState) {
+		// let { previousState, editorState } = this.state;
+		// let currentContent = editorState.getCurrentContent();
+		// this.socket.emit("doc", JSON.stringify(convertToRaw(currentContent)));
+		// this.setState({ previousState: this.state.editorState });
 		this.setState({ editorState });
-		// socket.emit("doc", convertToRaw(editorState.currentContent));
-		// socket.emit("doc", editorState);
+		// socket.on("doc", (data) => {
+		// 	let jsonData = JSON.parse(data);
+		// 	let rawContent = convertFromRaw(jsonData);
+		// 	this.setState({
+		// 		editorState: EditorState.createWithContent(rawContent),
+		// 	});
+		// });
 	}
 
 	handleKeyCommand(command) {
@@ -87,20 +97,17 @@ class RichEditor extends Component {
 		return "not-handled";
 	}
 
-	// setEditor(editor) {
-	// 	this.editor = editor;
-	// }
-
 	focusEditor() {
 		this.editor.focus();
 	}
 
 	saveContent() {
+		let { currentUser, documentId, saveEditorState } = this.props;
 		let contentState = this.state.editorState.getCurrentContent();
 		// let contentState = editorState.getCurrentContent();
 		let rawContent = convertToRaw(contentState);
-		console.log(rawContent);
-		this.props.saveDocument(JSON.stringify(rawContent));
+		let content = JSON.stringify(rawContent);
+		saveEditorState(currentUser.user.id, documentId, content);
 	}
 
 	render() {
@@ -163,7 +170,7 @@ class RichEditor extends Component {
 					<Editor
 						editorState={this.state.editorState}
 						onChange={this.onChange}
-						// handleKeyCommand={this.handleKeyCommand}
+						handleKeyCommand={this.handleKeyCommand}
 						plugins={plugins}
 						ref={(element) => {
 							this.editor = element;

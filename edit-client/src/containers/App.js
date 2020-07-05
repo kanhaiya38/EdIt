@@ -26,7 +26,6 @@ const App = () => {
 				<div className="onboarding">
 					<Navbar />
 					<Main />
-					{/* <MyEditor /> */}
 				</div>
 			</Router>
 		</Provider>

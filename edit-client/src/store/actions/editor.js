@@ -1,58 +1,47 @@
 import { API } from "../../services/api";
-import { addError, removeError } from "./errors";
-import { SAVE_DOCUMENT, SET_CURRENT_EDITOR } from "../actionTypes";
+import { SET_EDITOR_STATE, SAVE_EDITOR_STATE } from "../actionTypes";
+import { addError } from "./errors";
 
-export const setCurrentEditor = (editor) => ({
-	type: "SET_CURRENT_EDITOR",
+export const setEditorState = (editor) => ({
+	type: SET_EDITOR_STATE,
 	editor,
 });
 
-// export const modify = (document) => ({
-// 	type: MODIFY_DOCUMENT,
-// 	document,
-// });
-
-export const save = (document) => ({
-	type: SAVE_DOCUMENT,
-	document,
+export const saveEditor = (editor) => ({
+	type: SAVE_EDITOR_STATE,
+	editor,
 });
 
 export const fetchEditorState = (userId, documentId) => async (dispatch) => {
 	try {
-		console.log("getting editor state");
 		let res = await API.get(`users/${userId}/documents/${documentId}`);
-		dispatch(setCurrentEditor(res.data));
+		dispatch(setEditorState(res.data));
+		return res.data;
 	} catch (err) {
-		dispatch(addError(err));
-	}
-};
-
-export const saveDocument = (userId, documentId, content) => async (
-	dispatch
-) => {
-	try {
-		let res = await API.post(`users/${userId}/documents/${documentId}`, {
-			content,
-		});
-		console.log(res.data);
-		dispatch(save(res.data));
-	} catch (err) {
-		dispatch(addError(err));
+		dispatch(addError(err.message));
 		throw err;
 	}
 };
 
-// export const addCollaborator = (userId, documentId, username) => async (
-// 	dispatch
-// ) => {
+export const saveEditorState = (userId, documentId, content) => async (
+	dispatch
+) => {
+	try {
+		console.log(typeof content);
+		let res = await API.patch(`users/${userId}/documents/${documentId}`, {
+			content,
+		});
+		console.log(res.data);
+		dispatch(saveEditor(res.data));
+	} catch (err) {
+		dispatch(addError(err.message));
+	}
+};
+// export const fetchEditorState = (userId, documentId) => async (dispatch) => {
 // 	try {
-// 		console.log("hey i am here");
-// 		let res = await API.post(`users/${userId}/documents/${documentId}`, {
-// 			username,
-// 		});
-// 		dispatch(modify(res.data));
+// 		let res = await API.get(`users/${userId}/documents/${documentId}`);
+// 		dispatch(setEditorState(res.data));
 // 	} catch (err) {
-// 		dispatch(addError(err.message));
-// 		throw err;
+// 		dispatch(addError(err));
 // 	}
 // };

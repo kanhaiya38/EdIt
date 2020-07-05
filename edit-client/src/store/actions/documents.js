@@ -4,6 +4,7 @@ import {
 	LOAD_DOCUMENTS,
 	DELETE_DOCUMENT,
 	CREATE_DOCUMENT,
+	SET_EDITOR_STATE,
 } from "../actionTypes";
 
 export const fetch = (documents) => ({
@@ -23,7 +24,6 @@ export const create = (document) => ({
 
 export const fetchDocuments = (user_id) => async (dispatch) => {
 	try {
-		// console.log("Loading Documents");
 		let res = await API.get(`/users/${user_id}/documents`);
 		dispatch(fetch(res.data));
 	} catch (err) {
@@ -42,13 +42,10 @@ export const deleteDocument = (userId, documentId) => async (dispatch) => {
 
 export const createDocument = (userId, documentName) => async (dispatch) => {
 	try {
-		// console.log(user_id);
-		// console.log(documentName);
-
+		console.log(typeof documentName + "is documentName");
 		let res = await API.post(`users/${userId}/documents`, {
 			documentName,
 		});
-		// console.log(res.data);
 		dispatch(create(res.data));
 	} catch (err) {
 		dispatch(addError(err.message));

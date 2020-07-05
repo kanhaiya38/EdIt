@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import DocumentItem from "../components/DocumentItem";
-import { setCurrentEditor } from "../store/actions/editor";
 
 class DocumentList extends Component {
 	componentDidMount() {
-		this.props.fetchDocuments(this.props.currentUser.user.id);
+		let res = this.props.fetchDocuments(this.props.currentUser.user.id);
+		console.log(res);
 	}
 
 	render() {
@@ -12,10 +12,7 @@ class DocumentList extends Component {
 			currentUser,
 			documents,
 			deleteDocument,
-			// setCurrentEditor,
 		} = this.props;
-		// let setCurrentEditor = (i, j) => console.log("stuck " + i + j);
-		console.log(this.props);
 		let documentList = documents.map(
 			({ _id, createdAt, documentName, author }) => {
 				return (
@@ -25,11 +22,6 @@ class DocumentList extends Component {
 						date={createdAt}
 						documentName={documentName}
 						author={author.username}
-						// setCurrentEditor={setCurrentEditor.bind(
-						// 	this,
-						// 	author._id,
-						// 	_id
-						// )}
 						deleteDocument={deleteDocument.bind(
 							this,
 							author._id,

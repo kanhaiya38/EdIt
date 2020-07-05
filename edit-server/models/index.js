@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-mongoose.set("debug", true);
+// mongoose.set("debug", true);
 
 mongoose.Promise = Promise;
 
@@ -9,6 +9,7 @@ mongoose.connect("mongodb://localhost/edit", {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true,
+	useFindAndModify: false,
 });
 
 module.exports.User = require("./user");

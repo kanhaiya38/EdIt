@@ -13,7 +13,7 @@ const documentSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
 			required: true,
-			autopopulate: { select: "username", maxDepth: 2 },
+			// autopopulate: { select: "username", maxDepth: 2 },
 		},
 		collaborators: [
 			{
@@ -21,6 +21,9 @@ const documentSchema = new mongoose.Schema(
 				ref: "User",
 				autopopulate: { select: "username" },
 			},
+			// {
+			// 	selectPopulatedPaths: false,
+			// },
 		],
 		content: {
 			type: String,
@@ -29,6 +32,7 @@ const documentSchema = new mongoose.Schema(
 	},
 	{
 		timestamps: true,
+		selectPopulatedPaths: false,
 	}
 );
 
@@ -46,6 +50,7 @@ const documentSchema = new mongoose.Schema(
 
 documentSchema.plugin(autopopulate);
 documentSchema.plugin(updateVersioningPlugin);
+// documentSchema.options.selectPopulatedPaths = false;
 
 const Document = mongoose.model("Document", documentSchema);
 

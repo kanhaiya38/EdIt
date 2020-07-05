@@ -8,12 +8,20 @@ import {
 	useParams,
 } from "react-router-dom";
 import { connect } from "react-redux";
-import { saveDocument, fetchEditorState } from "../store/actions/editor";
+import { fetchEditorState, saveEditorState } from "../store/actions/editor";
+
+// fetchEditorState(this.props.)
 
 const EditorPage = (props) => {
 	let match = useRouteMatch();
 	let { documentId } = useParams();
-	let { errors, currentUser, editor, saveDocument } = props;
+	let {
+		errors,
+		currentUser,
+		editor,
+		saveEditorState,
+		fetchEditorState,
+	} = props;
 	return (
 		<Switch>
 			<Route exact path={`${match.path}/edit`}>
@@ -22,10 +30,9 @@ const EditorPage = (props) => {
 					errors={errors}
 					currentUser={currentUser}
 					documentId={documentId}
-					// editor={editor}
-					// openEditor={openEditor}
+					editor={editor}
 					fetchEditorState={fetchEditorState}
-					saveDocument={saveDocument}
+					saveEditorState={saveEditorState}
 				/>
 			</Route>
 		</Switch>
@@ -43,8 +50,5 @@ const mapStateToProps = (state) => {
 };
 
 export default withRouter(
-	connect(mapStateToProps, {
-		saveDocument,
-		fetchEditorState,
-	})(EditorPage)
+	connect(mapStateToProps, { fetchEditorState, saveEditorState })(EditorPage)
 );

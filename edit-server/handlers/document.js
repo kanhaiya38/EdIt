@@ -4,14 +4,19 @@ module.exports.getAllDocuments = async (req, res, next) => {
 	try {
 		let foundUser = await db.User.findById(req.params.user_id);
 
-		// let documents = await Promise.all(
-		// 	foundUser.documents.map(async (document) => {
-		// 		foundDocument = await db.Document.findById(document);
-		// 		return foundDocument;
-		// 	})
-		// );
+		let documents = await Promise.all(
+			foundUser.documents.map(async (document) => {
+				foundDocument = await db.Document.findById(document).populate(
+					"author",
+					{
+						username: true,
+					}
+				);
+				return foundDocument;
+			})
+		);
 
-		return res.status(200).json(foundUser.documents);
+		return res.status(200).json(documents);
 	} catch (err) {
 		next(err);
 	}
@@ -50,8 +55,14 @@ module.exports.getDocument = async (req, res, next) => {
 
 module.exports.saveDocument = async (req, res, next) => {
 	try {
+		console.log("I am here");
 		let foundDocument = await db.Document.findById(req.params.document_id);
-		// foundDocument.content = req.
+		// let foundDocument = await db.Document.findByIdAndUpdate()
+		console.log("body" + req);
+		// foundDocument.content = req.body.content;
+		await foundDocument.updateOne({ content: req.body.content });
+		// await foundDocument.save();
+		return res.status(200).json(foundDocument);
 	} catch (err) {
 		next(err);
 	}

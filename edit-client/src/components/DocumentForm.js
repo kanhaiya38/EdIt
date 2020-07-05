@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-// import { connect } from "react-redux";
-// import { createDocument } from "../store/actions/documents";
 
 class DocumentForm extends Component {
 	constructor() {
@@ -40,7 +38,6 @@ class DocumentForm extends Component {
 						name="documentName"
 						value={this.state.documentName}
 						onChange={this.handleChange}
-						// placeholder="Jane Doe"
 					/>
 				</div>
 				<button type="submit" className="btn btn-primary mb-2">
